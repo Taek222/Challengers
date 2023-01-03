@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ChallengersApplication {
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(ChallengersApplication.class, args);
 	}
 
