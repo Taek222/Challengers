@@ -59,9 +59,9 @@
             , #{levelOpen}
             , #{cell}
             , 'N'
-            , SYSDATE
+            , NOW()
             , #{userId}
-            , SYSDATE
+            , NOW()
             , #{userId}
         )
     </insert>
