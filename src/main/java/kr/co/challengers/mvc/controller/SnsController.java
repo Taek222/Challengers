@@ -4,10 +4,14 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import kr.co.challengers.configuration.http.BaseResponse;
+import kr.co.challengers.mvc.domain.Sns;
 import kr.co.challengers.mvc.domain.User;
 import kr.co.challengers.mvc.service.SnsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -19,38 +23,55 @@ public class SnsController {
     @Autowired
     private SnsService snsService;
 
-    //사용자 목록
-    @GetMapping
-    @ApiOperation(value="목록조회", notes="사용자 목록을 조회할 수 있습니다.")
-    public List<User> getList(){
-        return null;//snsService.getList();
+    /*
+    SnsMain 화면 이동
+    사용자의 스토리 및 친구 스토리 조회
+    @Param : 사용자 ID(필수값)
+     */
+    public BaseResponse<List<Sns>> getStoryList(){
+        return new BaseResponse<List<Sns>>(snsService.getStoryList());
     }
 
-    //사용자 상세정보
-    @GetMapping("/{userId}")
-    @ApiOperation(value="상세 조회", notes="사용자 상세정보를 조회할 수 있습니다.")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "userId", value="사용자ID", example = "testID")
-    })
-    public User get(@PathVariable String userId){
-        return null;//snsService.get(userId);
+    /*
+    SnsMain 스토리 랜덤 조회
+    @Param : 태그(선택)
+     */
+
+
+    /*
+    regStory 화면 이동
+     */
+    @RequestMapping("/regStory")
+    public ModelAndView regStoryPage(){
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/sns/regStory");
+        mv.addObject("pageNm", "regStory");
+        mv.addObject("title", "스토리등록");
+        return mv;
     }
 
-    //사용자 정보 등록/수정 저장
-    @PutMapping("/save")
-    @ApiOperation(value="저장", notes="사용자 상세정보를 저장할 수 있습니다.")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "userId", value="사용자ID", example = "testID"),
-            @ApiImplicitParam(name = "userNm", value="사용자 이름", example = "박이름"),
-            @ApiImplicitParam(name = "cell", value="사용자 연락처", example = "010-0000-0000")
-    })
-    public void save(User user){
-        //snsService.save(user);
+    /*
+    storyLikeList 화면 이동
+     */
+    @RequestMapping("/storyLikeList")
+    public ModelAndView storyLikeListPage(){
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/sns/storyLikeList");
+        mv.addObject("pageNm", "storyLikeList");
+        mv.addObject("title", "좋아요한 사용자의 목록");
+        return mv;
     }
 
-    //사용자 정보 삭제
-    @GetMapping("/delete")
-    public void delete(String userId){
-        //snsService.delete(userId);
+    /*
+    myStory 화면 이동
+     */
+    @RequestMapping("/myStory")
+    public ModelAndView myStoryPage(){
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/sns/myStory");
+        mv.addObject("pageNm", "myStory");
+        mv.addObject("title", "내 스토리 목록보기");
+        return mv;
     }
+
 }

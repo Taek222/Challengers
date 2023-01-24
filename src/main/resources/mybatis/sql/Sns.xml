@@ -3,4 +3,7 @@
 
 <mapper namespace="kr.co.challengers.mvc.repository.SnsRepository">
 
+    <select id="getStoryList" parameterType="kr.co.challengers.mvc.domain.Sns">
+        SELECT * FROM TB_SNS_MGMT
+    </select>
 </mapper>
