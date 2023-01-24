@@ -13,6 +13,13 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    public User login(String userId){
+        int chk = userRepository.login(userId);
+        if(chk == 1){
+            return userRepository.get(userId);
+        }
+        return null;
+    }
 
     //사용자 목록
     public List<User> getList(){

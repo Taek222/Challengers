@@ -8,6 +8,8 @@ import kr.co.challengers.configuration.http.BaseResponse;
 import kr.co.challengers.mvc.domain.Sns;
 import kr.co.challengers.mvc.domain.User;
 import kr.co.challengers.mvc.service.SnsService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +21,8 @@ import java.util.List;
 @RequestMapping("/SNS")
 @Api(tags = "SNS Api")
 public class SnsController {
+
+    Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private SnsService snsService;

@@ -7,6 +7,9 @@ import java.util.List;
 
 @Repository
 public interface UserRepository {
+
+    int login(String userId);
+
     //사용자 목록
     List<User> getList();
 

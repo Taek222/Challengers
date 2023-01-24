@@ -7,26 +7,79 @@ import io.swagger.annotations.ApiOperation;
 import kr.co.challengers.configuration.exception.BaseException;
 import kr.co.challengers.configuration.http.BaseResponse;
 import kr.co.challengers.configuration.http.BaseResponseCode;
+import kr.co.challengers.configuration.session.HttpSessionUser;
+import kr.co.challengers.configuration.web.bind.annotation.RequestConfig;
 import kr.co.challengers.mvc.domain.User;
 import kr.co.challengers.mvc.service.UserService;
+import kr.co.challengers.session.SessionUser;
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/user")
 @Api(tags = "사용자API")
 public class UserController {
 
+    private final HttpSessionUser httpSessionUser;
+
+    Logger logger = LoggerFactory.getLogger(getClass());
+
     @Autowired
     private UserService userService;
+
+    @GetMapping("/login/{userId}")
+    @ResponseBody
+    public boolean login(@PathVariable String userId){
+        User loginTryUser = userService.login(userId);
+        if(loginTryUser !=null) {
+            SessionUser session = new SessionUser();
+            session.setUser(loginTryUser);
+            //로그인 시 세션에 정보 저장
+            httpSessionUser.setAttribute(session);
+            return true;
+        }else{
+            throw new BaseException(BaseResponseCode.LOGIN_REQUIRED);
+        }
+    }
+
+    @GetMapping("/mypage/info")
+    public ModelAndView info(){
+        ModelAndView mv = new ModelAndView();
+        if(httpSessionUser.getAttribute()!=null) {
+            mv.setViewName("/mypage/info");
+            mv.addObject("pageNm", "mypage/info");
+            mv.addObject("userInfo", httpSessionUser.getAttribute());
+        }else{
+            mv.setViewName("/login");
+            mv.addObject("pageNm", "로그인화면");
+            mv.addObject("message", "세션이 유효하지 않습니다.");
+        }
+        return mv;
+    }
+
+    @GetMapping("/logout")
+    public ModelAndView logout(){
+        ModelAndView mv = new ModelAndView();
+        httpSessionUser.invalidate();
+        mv.setViewName("/home");
+        mv.addObject("pageNm", "홈 화면");
+        mv.addObject("message", "정상 로그아웃 되었습니다.");
+        return mv;
+    }
 
     //사용자 목록
     @GetMapping
     @ApiOperation(value="목록조회", notes="사용자 목록을 조회할 수 있습니다.")
     public BaseResponse<List<User>> getList(){
+        logger.info("UserController 의 getList");
         return new BaseResponse<List<User>>(userService.getList());
         //BaseResponse<리턴타입>(리턴할 데이터) 로 사용하면 미리 정의해둔 응답포맷에 맞게 리턴할 수 있다.
         //응답코드, 응답메시지, 데이터 로 구성된 json 형식으로 반환
@@ -65,8 +118,9 @@ public class UserController {
     }
 
     //사용자 정보 삭제
-    @GetMapping("/delete")
-    public BaseResponse<Boolean> delete(String userId){
+    @DeleteMapping("/delete/{userId}")
+    @RequestConfig(loginCheck = true) //로그인 체크가 필수인 경우
+    public BaseResponse<Boolean> delete(@PathVariable String userId){
         User user = userService.get(userId);
         if(user == null){
             throw new BaseException(BaseResponseCode.DATA_IS_NULL, new String[]{"사용자"});

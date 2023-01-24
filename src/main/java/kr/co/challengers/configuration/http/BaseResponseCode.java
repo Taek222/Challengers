@@ -6,6 +6,7 @@ public enum BaseResponseCode {
     ERROR, //실패
     DATA_IS_NULL,
     VALIDATE_REQUIRED,
+    LOGIN_REQUIRED,
     ;
 
 }
