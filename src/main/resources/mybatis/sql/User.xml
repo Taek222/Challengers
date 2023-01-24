@@ -3,6 +3,13 @@
 
 <mapper namespace="kr.co.challengers.mvc.repository.UserRepository">
 
+    <select id="login" parameterType="kr.co.challengers.mvc.domain.User" resultType="Integer">
+        SELECT
+            COUNT(*)
+        FROM TB_USER_MGMT
+        WHERE USER_ID = #{userId}
+    </select>
+
     <select id="getList" parameterType="kr.co.challengers.mvc.domain.User" resultType="kr.co.challengers.mvc.domain.User">
         SELECT
                 USER_ID
@@ -69,7 +76,7 @@
     <update id="delete" parameterType="String">
         UPDATE  TB_USER_MGMT
         SET     DEL_YN = 'Y'
-                , MOD_DT = SYSDATE
+                , MOD_DT = NOW()
                 , MOD_USER = #{userId}
         WHERE   USER_ID = #{userId}
     </update>
