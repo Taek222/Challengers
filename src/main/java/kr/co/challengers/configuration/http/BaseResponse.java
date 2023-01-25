@@ -1,6 +1,7 @@
 package kr.co.challengers.configuration.http;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /*
 공통으로 사용할 응답 클래스

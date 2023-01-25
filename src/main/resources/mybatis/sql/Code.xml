@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.ord//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.challengers.mvc.repository.CodeRepository">
+
+    <select id="getCodeList" parameterType="kr.co.challengers.mvc.domain.Code" resultType="kr.co.challengers.mvc.domain.Code">
+        SELECT COM_GRP_CD
+        , COM_CD
+        , CD_NM
+        , CD_DESC
+        , DEFAULT_YN
+        , SORT
+        , DEL_YN
+        , CRE_DT
+        , REG_USER
+        , MOD_DT
+        , MOD_USER
+        FROM tb_comn_cd
+        ORDER BY COM_GRP_CD, SORT
+    </select>
+</mapper>
