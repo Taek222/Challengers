@@ -8,5 +8,5 @@ import java.util.List;
 @Repository
 public interface CodeRepository {
 
-    List<Code> getCodeList();
+    List<Code> getCodeList(Code input);
 }

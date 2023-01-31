@@ -22,7 +22,7 @@ public class CodeService {
      *
      * @return 공통코드 목록
      */
-    public List<Code> getCodeList() {
-        return codeRepository.getCodeList();
+    public List<Code> getCodeList(String comGrpCd) {
+        return codeRepository.getCodeList(Code.builder().comGrpCd(comGrpCd).build());
     }
 }

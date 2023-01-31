@@ -16,6 +16,11 @@
         , MOD_DT
         , MOD_USER
         FROM tb_comn_cd
+        WHERE 1 = 1
+        AND DEL_YN = 'N'
+        <if test="comGrpCd != null and !comGrpCd.equals('')">
+            AND COM_GRP_CD = #{comGrpCd}
+        </if>
         ORDER BY COM_GRP_CD, SORT
     </select>
 </mapper>
