@@ -1,11 +1,14 @@
+DROP DATABASE `devchallegers`;
 CREATE SCHEMA `devchallegers` DEFAULT CHARACTER SET utf8mb4 ;
 
+DROP USER 'chlgadm'@'localhost';
 CREATE USER 'chlgadm'@'localhost' identified by 'chlgadm!23';
 
 USE `devchallegers`;
 
 GRANT ALL ON `devchallegers`.* TO 'chlgadm'@'localhost';
 
+DROP TABLE IF EXISTS `devchallegers`.`tb_user_mgmt`;
 CREATE TABLE `devchallegers`.`tb_user_mgmt` (
   `USER_ID` VARCHAR(20) NOT NULL,
   `DOMAIN` VARCHAR(50) NULL,
@@ -21,6 +24,7 @@ CREATE TABLE `devchallegers`.`tb_user_mgmt` (
   PRIMARY KEY (`USER_ID`))
 COMMENT = '사용자 관리';
 
+DROP TABLE IF EXISTS `devchallegers`.`tb_friend_mgmt`;
 CREATE TABLE `devchallegers`.`tb_friend_mgmt` (
   `USER_ID` VARCHAR(20) NOT NULL,
   `SEQ` INT(3) NOT NULL,
@@ -30,6 +34,7 @@ CREATE TABLE `devchallegers`.`tb_friend_mgmt` (
   PRIMARY KEY (`USER_ID`, `SEQ`))
 COMMENT = '친구 관리';
 
+DROP TABLE IF EXISTS `devchallegers`.`tb_challenge_mgmt`;
 CREATE TABLE `devchallegers`.`tb_challenge_mgmt` (
   `CHALLENGE_NO` VARCHAR(30) NOT NULL,
   `TITLE` VARCHAR(30) NOT NULL,
@@ -45,6 +50,7 @@ CREATE TABLE `devchallegers`.`tb_challenge_mgmt` (
   PRIMARY KEY (`CHALLENGE_NO`))
 COMMENT = '챌린지 관리';
 
+DROP TABLE IF EXISTS `devchallegers`.`tb_challenge_photo`;
 CREATE TABLE `devchallegers`.`tb_challenge_photo` (
   `PHOTO_NO` VARCHAR(30) NOT NULL,
   `CHALLENGE_NO` VARCHAR(30) NOT NULL,
@@ -53,6 +59,7 @@ CREATE TABLE `devchallegers`.`tb_challenge_photo` (
   PRIMARY KEY (`PHOTO_NO`))
 COMMENT = '챌린지 사진';
 
+DROP TABLE IF EXISTS `devchallegers`.`tb_challenge_part`;
 CREATE TABLE `devchallegers`.`tb_challenge_part` (
   `PART_NO` VARCHAR(30) NOT NULL,
   `CHALLENGE_NO` VARCHAR(30) NOT NULL,
@@ -61,6 +68,7 @@ CREATE TABLE `devchallegers`.`tb_challenge_part` (
   PRIMARY KEY (`PART_NO`))
 COMMENT = '챌린지 배팅';
 
+DROP TABLE IF EXISTS `devchallegers`.`tb_sns_mgmt`;
 CREATE TABLE `devchallegers`.`tb_sns_mgmt` (
   `USER_ID` VARCHAR(20) NOT NULL,
   `POST_ID` INT NOT NULL AUTO_INCREMENT,
@@ -74,6 +82,7 @@ CREATE TABLE `devchallegers`.`tb_sns_mgmt` (
   PRIMARY KEY (`POST_ID`))
 COMMENT = 'SNS 관리';
 
+DROP TABLE IF EXISTS `devchallegers`.`tb_sns_cate`;
 CREATE TABLE `devchallegers`.`tb_sns_cate` (
   `POST_ID` INT NOT NULL,
   `SEQ` INT NOT NULL,
@@ -86,6 +95,7 @@ CREATE TABLE `devchallegers`.`tb_sns_cate` (
   PRIMARY KEY (`POST_ID`, `SEQ`))
 COMMENT = 'SNS 카테고리';
 
+DROP TABLE IF EXISTS `devchallegers`.`tb_todo_mgmt`;
 CREATE TABLE `devchallegers`.`tb_todo_mgmt` (
   `TODO_ID` INT NOT NULL AUTO_INCREMENT,
   `TITLE` VARCHAR(50) NOT NULL,
@@ -98,6 +108,7 @@ CREATE TABLE `devchallegers`.`tb_todo_mgmt` (
   PRIMARY KEY (`TODO_ID`))
 COMMENT = 'TODO 관리';
 
+DROP TABLE IF EXISTS `devchallegers`.`tb_sns_like`;
 CREATE TABLE `devchallegers`.`tb_sns_like` (
   `POST_ID` INT NOT NULL AUTO_INCREMENT,
   `LIKE_USER_ID` VARCHAR(20) NOT NULL,
@@ -109,6 +120,7 @@ CREATE TABLE `devchallegers`.`tb_sns_like` (
   PRIMARY KEY (`POST_ID`, `LIKE_USER_ID`))
 COMMENT = 'SNS 좋아요';
 
+DROP TABLE IF EXISTS `devchallegers`.`tb_comn_cd`;
 CREATE TABLE `devchallegers`.`tb_comn_cd` (
   `COM_GRP_CD` VARCHAR(20) NOT NULL,
   `COM_CD` VARCHAR(20) NOT NULL,
@@ -124,6 +136,7 @@ CREATE TABLE `devchallegers`.`tb_comn_cd` (
   PRIMARY KEY (`COM_GRP_CD`, `COM_CD`))
 COMMENT = '공통코드 관리';
 
+DROP TABLE IF EXISTS `devchallegers`.`tb_notification_mgmt`;
 CREATE TABLE `devchallegers`.`tb_notification_mgmt` (
   `NOTIFICATION_ID` INT NOT NULL AUTO_INCREMENT,
   `TYPE` VARCHAR(20) NOT NULL,
@@ -134,6 +147,7 @@ CREATE TABLE `devchallegers`.`tb_notification_mgmt` (
   PRIMARY KEY (`NOTIFICATION_ID`))
 COMMENT = '알림 관리';
 
+DROP TABLE IF EXISTS `devchallegers`.`tb_challenge_certify`;
 CREATE TABLE `devchallegers`.`tb_challenge_certify` (
   `CHALLENGE_NO` VARCHAR(30) NOT NULL,
   `USER_ID` VARCHAR(20) NOT NULL,
