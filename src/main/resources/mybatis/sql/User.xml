@@ -2,15 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.ord//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="kr.co.challengers.mvc.repository.UserRepository">
-
-    <select id="login" parameterType="kr.co.challengers.mvc.domain.User" resultType="Integer">
+    <select id="login" parameterType="hashmap" resultType="Integer">
         SELECT
             COUNT(*)
         FROM TB_USER_MGMT
         WHERE USER_ID = #{userId}
     </select>
 
-    <select id="getList" parameterType="kr.co.challengers.mvc.domain.User" resultType="kr.co.challengers.mvc.domain.User">
+    <select id="getList" parameterType="kr.co.challengers.mvc.domain.User" resultType="hashmap">
         SELECT
                 USER_ID
                 , DOMAIN
@@ -24,6 +23,11 @@
                 , MOD_DT
                 , MOD_USER
         FROM    TB_USER_MGMT
+        <where>
+            <if test="@org.apache.commons.lang3.StringUtils@isNotEmpty(delYn)">
+                AND DEL_YN = #{delYn}
+            </if>
+        </where>
     </select>
 
     <select id="get" parameterType="String" resultType="kr.co.challengers.mvc.domain.User">
