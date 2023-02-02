@@ -23,12 +23,22 @@ public class CodeController {
         this.codeService = codeService;
     }
 
-    // TODO : 공통코드 그룹 목록 조회
+    @GetMapping
+    @ApiOperation(value = "그룹코드 목록 조회")
+    public BaseResponse<List<Code>> getGroupCodeList() {
 
-    @GetMapping("/{comGrpCd}/list")
-    @ApiOperation(value="공통코드 목록 조회")
+        List<Code> groupCodeList = codeService.getGroupCodeList();
+
+        return new BaseResponse<List<Code>>(groupCodeList);
+    }
+
+    @GetMapping("/{comGrpCd}")
+    @ApiOperation(value = "공통코드 목록 조회")
     public BaseResponse<List<Code>> getCodeList(@PathVariable String comGrpCd) {
-        return new BaseResponse<List<Code>>(codeService.getCodeList(Code.builder().comGrpCd(comGrpCd).build()));
+
+        List<Code> codeList = codeService.getCodeList(Code.builder().comGrpCd(comGrpCd).build());
+
+        return new BaseResponse<List<Code>>(codeList);
     }
 
     // TODO : 공통코드 비활성화

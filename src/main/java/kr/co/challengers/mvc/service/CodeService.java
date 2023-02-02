@@ -6,6 +6,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * 공통코드 관리 Service
+ */
 @Service
 public class CodeService {
 
@@ -13,6 +16,17 @@ public class CodeService {
 
     public CodeService(CodeRepository codeRepository) {
         this.codeRepository = codeRepository;
+    }
+
+    /**
+     * <pre>
+     * 그룹 코드 목록 조회
+     * </pre>
+     *
+     * @return 그룹 코드 목록
+     */
+    public List<Code> getGroupCodeList() {
+        return codeRepository.getGroupCodeList();
     }
 
     /**
