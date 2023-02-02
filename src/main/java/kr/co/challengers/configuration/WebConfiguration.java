@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.Locale;
@@ -28,8 +29,23 @@ public class WebConfiguration implements WebMvcConfigurer {
         return new BaseHandlerInterceptor();
     }
 
+    @Bean
+    public GlobalConfig config(){
+        return new GlobalConfig();
+    }
+
     @Override
     public void addInterceptors(InterceptorRegistry registry){
         registry.addInterceptor(baseHandlerInterceptor());
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry){
+        String resourcePattern = config().getUploadResourcePath() + "**";
+        if(config().isLocal()){//로컬은 보통 윈도우환경
+            registry.addResourceHandler(resourcePattern).addResourceLocations("file:///"+config().getUploadFilePath());
+        }else{//개발, 운영은 보통 리눅스, 유닉스 환경
+            registry.addResourceHandler(resourcePattern).addResourceLocations("file:"+config().getUploadFilePath());
+        }
     }
 }
