@@ -12,15 +12,19 @@ import kr.co.challengers.configuration.web.bind.annotation.RequestConfig;
 import kr.co.challengers.mvc.domain.User;
 import kr.co.challengers.mvc.service.UserService;
 import kr.co.challengers.session.SessionUser;
+import kr.co.challengers.utils.FileUtils;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
@@ -35,10 +39,16 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private FileUtils fileUtils;
+
     @GetMapping("/login/{userId}")
     @ResponseBody
     public boolean login(@PathVariable String userId){
-        User loginTryUser = userService.login(userId);
+        Map<String, Object> param = new HashMap<>();
+        param.put("userId", userId);
+        User loginTryUser = userService.login(param);
+
         if(loginTryUser !=null) {
             SessionUser session = new SessionUser();
             session.setUser(loginTryUser);
@@ -92,13 +102,15 @@ public class UserController {
             @ApiImplicitParam(name = "userId", value="사용자ID", example = "testID")
     })
     public BaseResponse<User> get(@PathVariable String userId){
-        User user = userService.get(userId);
+        Map<String, Object> param = new HashMap<>();
+        param.put("userId", userId);
+        User user = userService.get(param);
         if(user == null){
             throw new BaseException(BaseResponseCode.DATA_IS_NULL, new String[]{"사용자"});
             //예외처리와 예외코드는 BaseResponseCode, message_ko.properties 에 추가 또는 코드 찾아서 사용
             //예외처리시 BaseException(예외코드) 또는 BaseException(예외코드, {메시지에 포함시킬 용어1, 메시지에 포함시킬 용어2 ...}) 형식으로 처리한다.
         }
-        return new BaseResponse<User>(userService.get(userId));
+        return new BaseResponse<User>(userService.get(param));
     }
 
     //사용자 정보 등록/수정 저장
@@ -121,11 +133,18 @@ public class UserController {
     @DeleteMapping("/delete/{userId}")
     @RequestConfig(loginCheck = true) //로그인 체크가 필수인 경우
     public BaseResponse<Boolean> delete(@PathVariable String userId){
-        User user = userService.get(userId);
+        Map<String, Object> param = new HashMap<>();
+        param.put("userId", userId);
+        User user = userService.get(param);
         if(user == null){
             throw new BaseException(BaseResponseCode.DATA_IS_NULL, new String[]{"사용자"});
         }
         userService.delete(userId);
         return new BaseResponse<Boolean>(true);
+    }
+
+    @PostMapping("/filesave")
+    public BaseResponse<Boolean> fileSave (@RequestParam("uploadFile")MultipartFile multipartFile){
+        return fileUtils.uploadFiles(multipartFile);
     }
 }
