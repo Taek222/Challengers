@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserService {
@@ -13,10 +14,10 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public User login(String userId){
-        int chk = userRepository.login(userId);
+    public User login(Map<String, Object> param){
+        int chk = userRepository.login(param);
         if(chk == 1){
-            return userRepository.get(userId);
+            return userRepository.get(param);
         }
         return null;
     }
@@ -27,8 +28,8 @@ public class UserService {
     }
 
     //사용자 상세정보
-    public User get(String userId){
-        return userRepository.get(userId);
+    public User get(Map<String, Object> param){
+        return userRepository.get(param);
     }
 
     //사용자 정보 저장
