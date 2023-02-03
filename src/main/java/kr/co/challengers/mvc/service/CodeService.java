@@ -20,7 +20,7 @@ public class CodeService {
 
     /**
      * <pre>
-     * 그룹 코드 목록 조회
+     * 그룹코드 목록 조회
      * </pre>
      *
      * @return 그룹 코드 목록
@@ -31,7 +31,7 @@ public class CodeService {
 
     /**
      * <pre>
-     * 공통 코드 목록 조회
+     * 공통코드 목록 조회
      * </pre>
      *
      * @param input 그룹코드 조회 조건 (예: 그룹코드, 사용여부 등)
@@ -39,5 +39,31 @@ public class CodeService {
      */
     public List<Code> getCodeList(Code input) {
         return codeRepository.getCodeList(input);
+    }
+
+    /**
+     * <pre>
+     * 공통코드 사용여부 변경
+     * </pre>
+     *
+     * @param input comGrpCd 그룹코드
+     *              comCd 공통코드(그룹코드일 경우 'ZZ')
+     *              useYn 활성화/비활성화 여부
+     */
+    public void updateCodeUseYn(Code input) {
+        codeRepository.updateCodeUseYn(input);
+    }
+
+    /**
+     * <pre>
+     * 공통코드 삭제
+     * </pre>
+     *
+     * @param input comGrpCd 그룹코드
+     *              comCd 공통코드(그룹코드일 경우 null)
+     *              useYn 활성화/비활성화 여부
+     */
+    public void deleteCode(Code input) {
+        codeRepository.deleteCode(input);
     }
 }
