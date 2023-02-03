@@ -3,12 +3,10 @@ package kr.co.challengers.mvc.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import kr.co.challengers.configuration.http.BaseResponse;
+import kr.co.challengers.configuration.session.HttpSessionUser;
 import kr.co.challengers.mvc.domain.Code;
 import kr.co.challengers.mvc.service.CodeService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,9 +15,11 @@ import java.util.List;
 @Api(tags = "공통코드 API")
 public class CodeController {
 
+    private final HttpSessionUser httpSessionUser;
     private CodeService codeService;
 
-    public CodeController(CodeService codeService) {
+    public CodeController(HttpSessionUser httpSessionUser, CodeService codeService) {
+        this.httpSessionUser = httpSessionUser;
         this.codeService = codeService;
     }
 
@@ -29,7 +29,7 @@ public class CodeController {
 
         List<Code> groupCodeList = codeService.getGroupCodeList();
 
-        return new BaseResponse<List<Code>>(groupCodeList);
+        return BaseResponse.SuccessfulResult(groupCodeList);
     }
 
     @GetMapping("/{comGrpCd}")
@@ -38,10 +38,42 @@ public class CodeController {
 
         List<Code> codeList = codeService.getCodeList(Code.builder().comGrpCd(comGrpCd).build());
 
-        return new BaseResponse<List<Code>>(codeList);
+        return BaseResponse.SuccessfulResult(codeList);
     }
 
-    // TODO : 공통코드 비활성화
+    @PostMapping("/{comGrpCd}/update")
+    @ApiOperation(value = "공통코드 사용여부 변경")
+    public BaseResponse<Boolean> updateCodeUseYn(@PathVariable String comGrpCd,
+                                                 @RequestParam String comCd,
+                                                 @RequestParam String useYn) {
 
-    // TODO : 공통코드 삭제
+        String userId = httpSessionUser.getAttribute().getUserId();
+
+        Code input = Code.builder()
+                .comGrpCd(comGrpCd)
+                .comCd(comCd)
+                .useYn(useYn)
+                .modUser(userId).build();
+
+        codeService.updateCodeUseYn(input);
+
+        return BaseResponse.SuccessfulResult(true);
+    }
+
+    @PostMapping("/{comGrpCd}/delete")
+    @ApiOperation(value = "공통코드 삭제")
+    public BaseResponse<Boolean> deleteCode(@PathVariable String comGrpCd,
+                                            @RequestParam(required = false) String comCd) {
+
+        String userId = httpSessionUser.getAttribute().getUserId();
+
+        Code input = Code.builder()
+                .comGrpCd(comGrpCd)
+                .comCd(comCd)
+                .modUser(userId).build();
+
+        codeService.deleteCode(input);
+
+        return BaseResponse.SuccessfulResult(true);
+    }
 }

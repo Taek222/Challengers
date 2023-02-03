@@ -21,9 +21,10 @@ public class Code {
     private String cdDesc;
     private String defaultYn;
     private String sort;
+    private String useYn;
     private String delYn;
     private Date creDt;
     private String regUser;
-    private Date modeDt;
+    private Date modDt;
     private String modUser;
 }
