@@ -1,7 +1,7 @@
-DROP DATABASE `devchallegers`;
+DROP DATABASE IF EXISTS `devchallegers`;
 CREATE SCHEMA `devchallegers` DEFAULT CHARACTER SET utf8mb4 ;
 
-DROP USER 'chlgadm'@'localhost';
+DROP USER IF EXISTS 'chlgadm'@'localhost';
 CREATE USER 'chlgadm'@'localhost' identified by 'chlgadm!23';
 
 USE `devchallegers`;
