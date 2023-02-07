@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.ord//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.challengers.mvc.repository.ChallengeRepository">
+
+    <insert id="insertChallenge" parameterType="kr.co.challengers.mvc.domain.Challenge">
+        INSERT INTO TB_CHALLENGE_MGMT VALUES(0, #{title}, #{contents}, #{periodStart}, #{periodEnd}, #{frequency}, #{example}, #{category}, #{type}, #{mainExp}, "REQ")
+    </insert>
+
+
+    <insert id="insertChallengePhoto" parameterType="kr.co.challengers.mvc.domain.ChallengePhoto">
+        INSERT INTO TB_CHALLENGE_PHOTO VALUES(0,last_insert_id(),default,#{photoName})
+    </insert>
+</mapper>
