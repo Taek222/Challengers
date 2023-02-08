@@ -9,4 +9,5 @@ public enum BaseResponseCode {
     LOGIN_REQUIRED,
     ;
 
+
 }

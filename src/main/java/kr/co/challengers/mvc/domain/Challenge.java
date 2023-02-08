@@ -22,6 +22,7 @@ public class Challenge {
     private String example;
     private String category;
     private String type;
+    private String mainExp;
     private String status;
 
 

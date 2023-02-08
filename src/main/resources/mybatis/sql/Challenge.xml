@@ -11,4 +11,24 @@
     <insert id="insertChallengePhoto" parameterType="kr.co.challengers.mvc.domain.ChallengePhoto">
         INSERT INTO TB_CHALLENGE_PHOTO VALUES(0,last_insert_id(),default,#{photoName})
     </insert>
+
+    <select id="getList" resultType="kr.co.challengers.mvc.domain.Challenge">
+        SELECT * FROM TB_CHALLENGE_MGMT
+    </select>
+
+    <select id="getPhotoList" resultType="kr.co.challengers.mvc.domain.ChallengePhoto">
+        SELECT * FROM TB_CHALLENGE_PHOTO WHERE MAIN_YN = 'Y'
+    </select>
+
+    <select id=" getChallengePhoto" resultType="kr.co.challengers.mvc.domain.ChallengePhoto">
+        SELECT * FROM TB_CHALLENGE_PHOTO WHERE CHALLENGE_NO = #{challengeNo} AND MAIN_YN = 'N'
+    </select>
+
+    <select id="getChallenge" parameterType="_int" resultType="kr.co.challengers.mvc.domain.Challenge">
+        SELECT * FROM TB_CHALLENGE_MGMT WHERE CHALLENGE_NO = #{challengeNo}
+    </select>
+
+    <select id="getPart" parameterType="_int" resultType="kr.co.challengers.mvc.domain.Part">
+        SELECT * FROM TB_CHALLENGE_PART WHERE CHALLENGE_NO = #{challengeNo}
+    </select>
 </mapper>
