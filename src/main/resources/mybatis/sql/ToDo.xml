@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.ord//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.challengers.mvc.repository.ToDoRepository">
+
+    <select id="getTodayToDo" parameterType="kr.co.challengers.mvc.domain.User" resultType="hashmap">
+        SELECT
+                TODO_ID
+                , TITLE
+                , EXEC_DT
+                , CRE_DT
+                , REG_USER
+                , MOD_DT
+                , MOD_USER
+        FROM    TB_TODO_MGMT
+        WHERE   REG_USER = #{userId}
+        and     DEL_YN = 'N'
+    </select>
+
+</mapper>
