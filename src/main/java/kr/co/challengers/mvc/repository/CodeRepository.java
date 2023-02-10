@@ -38,4 +38,11 @@ public interface CodeRepository {
      * </pre>
      */
     void deleteCode(Code input);
+
+    /**
+     * <pre>
+     * 공통코드 등록
+     * </pre>
+     */
+    void insertCode(Code input);
 }

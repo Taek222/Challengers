@@ -5,23 +5,23 @@ import io.swagger.annotations.ApiOperation;
 import kr.co.challengers.configuration.http.BaseResponse;
 import kr.co.challengers.configuration.session.HttpSessionUser;
 import kr.co.challengers.mvc.domain.Code;
+import kr.co.challengers.mvc.mapper.CodeMapper;
+import kr.co.challengers.mvc.parameter.CodeRequestParameter;
 import kr.co.challengers.mvc.service.CodeService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/code")
 @Api(tags = "공통코드 API")
 public class CodeController {
 
     private final HttpSessionUser httpSessionUser;
-    private CodeService codeService;
-
-    public CodeController(HttpSessionUser httpSessionUser, CodeService codeService) {
-        this.httpSessionUser = httpSessionUser;
-        this.codeService = codeService;
-    }
+    private final CodeService codeService;
 
     @GetMapping
     @ApiOperation(value = "그룹코드 목록 조회")
@@ -73,6 +73,21 @@ public class CodeController {
                 .modUser(userId).build();
 
         codeService.deleteCode(input);
+
+        return BaseResponse.SuccessfulResult(true);
+    }
+
+    @PostMapping(value = "/save", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "공통코드 등록")
+    public BaseResponse<Boolean> insertCode(@RequestBody CodeRequestParameter.CodeCreateRequest request) {
+
+        String userId = httpSessionUser.getAttribute().getUserId();
+
+        Code input = CodeMapper.INSTANCE.getCodeFromCodeCreateRequest(request);
+        input.setRegUser(userId);
+        input.setModUser(userId);
+
+        codeService.insertCode(input);
 
         return BaseResponse.SuccessfulResult(true);
     }
