@@ -10,7 +10,7 @@
     </appender>
 
     <logger name="kr.co.challengers.mvc.repository">
-        <level value="ERROR"/>
+        <level value="DEBUG"/>
     </logger>
     <logger name="org.springframework.boot">
         <level value="ERROR"/>
@@ -34,24 +34,24 @@
         <level value="ERROR"/>
     </logger>
     <logger name="log4jdbc">
-        <level value="ERROR"/>
+        <level value="DEBUG"/>
     </logger>
     <logger name="org.mybatis">
-        <level value="ERROR"/>
+        <level value="DEBUG"/>
     </logger>
     <logger name="com.zaxxer">
         <level value="ERROR"/>
     </logger>
 
     <!-- 쿼리 logger-->
-    <logger name="jdbc" level="ERROR"/>
+    <logger name="jdbc" level="DEBUG"/>
     <logger name="jdbc.connection" level="ERROR"/>
     <!--sql문만 로그로 남김, preparedStatement 일 경우 argument 값으로 대체된 sql문 보기-->
-    <logger name="jdbc.sqlonly" level="ERROR"/>
+    <logger name="jdbc.sqlonly" level="DEBUG"/>
     <!--sql 수행시간 정보-->
-    <logger name="jdbc.sqltiming" level="ERROR"/>
+    <logger name="jdbc.sqltiming" level="DEBUG"/>
     <!--sql 실행 결과 데이터셋 제외-->
-    <logger name="jdbc.resultset" level="OFF"/>
+    <logger name="jdbc.resultset" level="ON"/>
     <root level="DEBUG">
         <appender-ref ref="STDOUT"/>
     </root>
