@@ -66,4 +66,13 @@ public class CodeService {
     public void deleteCode(Code input) {
         codeRepository.deleteCode(input);
     }
+
+    /**
+     * <pre>
+     * 공통코드 등록
+     * </pre>
+     */
+    public void insertCode(Code input) {
+        codeRepository.insertCode(input);
+    }
 }

@@ -44,4 +44,36 @@
             AND COM_CD = #{comCd}
         </if>
     </delete>
+
+    <!-- 공통코드 등록 -->
+    <insert id="insertCode" parameterType="kr.co.challengers.mvc.domain.Code">
+        INSERT
+        INTO tb_comn_cd
+        (COM_GRP_CD,
+        COM_CD,
+        CD_NM,
+        CD_DESC,
+        DEFAULT_YN,
+        SORT,
+        USE_YN,
+        DEL_YN,
+        CRE_DT,
+        REG_USER,
+        MOD_DT,
+        MOD_USER)
+        VALUES (
+        #{comGrpCd},
+        #{comCd},
+        #{cdNm},
+        #{cdDesc},
+        #{defaultYn},
+        (SELECT T.NEXT_SORT FROM (SELECT MAX(SORT) + 1 AS NEXT_SORT FROM tb_comn_cd WHERE COM_GRP_CD = #{comGrpCd}) T),
+        'Y',
+        'N',
+        CURRENT_TIMESTAMP,
+        #{regUser},
+        CURRENT_TIMESTAMP,
+        #{modUser}
+        )
+    </insert>
 </mapper>
