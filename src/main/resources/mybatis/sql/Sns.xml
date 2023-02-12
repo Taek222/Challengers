@@ -3,7 +3,82 @@
 
 <mapper namespace="kr.co.challengers.mvc.repository.SnsRepository">
 
-    <select id="getStoryList" parameterType="kr.co.challengers.mvc.domain.Sns">
-        SELECT * FROM TB_SNS_MGMT
+    <select id="getStoryFList" parameterType="kr.co.challengers.mvc.parameter.SnsRequestParameter" resultType="hashmap">
+        <!-- 업로드한 친구 목록 조회 -->
+        SELECT  DISTINCT(F.FRIEND_ID)
+        FROM    TB_SNS_MGMT S
+                , TB_FRIEND_MGMT F
+        WHERE   F.FRIEND_ID = S.USER_ID
+        AND     F.USER_ID = #{userId}
+        AND     S.STATUS IN ('1', '2') <!--전체공개, 친구공개-->
+        AND     S.DEL_YN = 'N'
+        AND     F.REQ_STATUS = 'FLW'
+        AND     F.DEL_YN = 'N'
+        ORDER BY S.CRE_DT
+    </select>
+
+    <select id="getRandomStory" parameterType="kr.co.challengers.mvc.parameter.SnsRequestParameter" resultType="hashmap">
+    <!--    전체공개된 사용자 스토리 조회    -->
+        SELECT  S.USER_ID <!--게시자 id-->
+                , S.POST_ID <!--게시자물 ID-->
+                , S.IMAGE_PATH <!-- 이미지경로-->
+        FROM    TB_SNS_MGMT S
+                , TB_SNS_CATE C
+        <where>
+            AND C.POST_ID = S.POST_ID
+            AND     S.DEL_YN = 'N'
+            AND     S.STATUS = '1'
+            AND     S.USER_ID != #{userId} <!--세션유저 제외-->
+            <if test="@org.apache.commons.lang3.ObjectUtils@isNotEmpty(categoryList)">
+                AND C.CATEGORY IN (
+                    <foreach collection="categoryList" item="value" separator=",">
+                        #{value}
+                    </foreach>
+                )
+            </if>
+        </where>
+        GROUP BY S.USER_ID, S.POST_ID, S.IMAGE_PATH
+        ORDER BY S.CRE_DT
+    </select>
+
+
+    <select id="getStories" parameterType="String">
+        SELECT  USER_ID <!--게시자 id-->
+        , POST_ID <!--게시자물 ID-->
+        , IMAGE_PATH <!-- 이미지경로-->
+        FROM    TB_SNS_MGMT S
+        WHERE   S.DEL_YN = 'N'
+        <if test="@org.apache.commons.lang3.ObjectUtils@isNotEmpty(statusList)">
+            AND S.STATUS IN (
+            <foreach collection="statusList" item="value" separator=",">
+                #{value}
+            </foreach>
+            )
+        </if>
+        AND     S.USER_ID = #{userId}
+        ORDER BY S.CRE_DT
+    </select>
+
+    <select id="getLikeList" parameterType="int" resultType="hashmap">
+        SELECT  LIKE_USER_ID
+        FROM    TB_SNS_LIKE
+        WHERE   POST_ID = #{postId}
+    </select>
+
+    <select id="getStoryInfo" parameterType="int" resultType="kr.co.challengers.mvc.domain.Sns">
+        SELECT A.USER_ID
+                , A.POST_ID
+                , A.IMAGE_PATH
+                , MAX(A.LIKE_YN)
+        FROM (
+            SELECT  A.USER_ID
+                    , A.POST_ID
+                    , A.IMAGE_PATH
+                    , IF(B.LIKE_USER_ID = #{userId}, 1, 0) as LIKE_YN
+            FROM    TB_SNS_MGMT A
+            LEFT OUTER JOIN TB_SNS_LIKE B
+                ON A.POST_ID = B.POST_ID
+            ) A
+        GROUP BY USER_ID, POST_ID, IMAGE_PATH
     </select>
 </mapper>
