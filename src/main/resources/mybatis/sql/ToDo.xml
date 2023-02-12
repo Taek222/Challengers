@@ -3,18 +3,22 @@
 
 <mapper namespace="kr.co.challengers.mvc.repository.ToDoRepository">
 
-    <select id="getTodayToDo" parameterType="kr.co.challengers.mvc.domain.User" resultType="hashmap">
+    <select id="getTodayToDo" parameterType="kr.co.challengers.mvc.parameter.ToDoRequestParameter" resultType="hashmap">
         SELECT
                 TODO_ID
                 , TITLE
-                , EXEC_DT
                 , CRE_DT
                 , REG_USER
                 , MOD_DT
                 , MOD_USER
         FROM    TB_TODO_MGMT
-        WHERE   REG_USER = #{userId}
-        and     DEL_YN = 'N'
+        <where> REG_USER = #{userId}
+            and     DEL_YN = 'N'
+            AND     DATE_FORMAT(EXEC_DT, '%Y-%m-%d') = CURRENT_DATE()
+            <if test="@org.apache.commons.lang3.ObjectUtils@isNotEmpty(status)">
+                AND STATUS = #{status}
+            </if>
+        </where>
     </select>
 
 </mapper>
