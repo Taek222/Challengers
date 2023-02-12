@@ -67,7 +67,7 @@
         #{cdNm},
         #{cdDesc},
         #{defaultYn},
-        (SELECT MAX(SORT) + 1 FROM tb_comn_cd WHERE COM_GRP_CD = #{comGrpCd}),
+        (SELECT T.NEXT_SORT FROM (SELECT MAX(SORT) + 1 AS NEXT_SORT FROM tb_comn_cd WHERE COM_GRP_CD = #{comGrpCd}) T),
         'Y',
         'N',
         CURRENT_TIMESTAMP,

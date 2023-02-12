@@ -2,18 +2,14 @@ package kr.co.challengers.mvc.parameter;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 
 public class CodeRequestParameter {
 
-    @NoArgsConstructor
-    @AllArgsConstructor
     @Data
     @ApiModel(value = "공통코드 등록 요청 모델")
-    public class CodeCreateRequest {
+    public static class CodeCreateRequest {
 
         @ApiModelProperty(value = "그룹코드", example = "NOTIFICATIONTYPE", position = 1)
         private String comGrpCd;
